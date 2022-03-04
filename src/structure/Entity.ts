@@ -12,7 +12,7 @@ export abstract class Entity {
     const embed = new MessageEmbed()
       .setColor("RANDOM")
       .setTitle(this.name)
-      .setThumbnail(this.imageUrl);
+      .setImage(this.imageUrl);
 
     return embed;
   }
