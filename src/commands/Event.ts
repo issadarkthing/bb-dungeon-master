@@ -4,7 +4,6 @@ import { ButtonHandler } from "@jiman24/discordjs-button";
 import { random, time } from "@jiman24/discordjs-utils";
 import { Player } from "../structure/Player";
 import { Monster } from "../structure/Monster";
-import { stripIndents } from "common-tags";
 
 export default class extends Command {
   name = "event";
