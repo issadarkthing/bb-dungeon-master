@@ -6,12 +6,12 @@ import { Player } from "../structure/Player";
 import { Monster } from "../structure/Monster";
 
 export default class extends Command {
-  name = "event";
+  name = "dungeon";
   waitTime = time.MINUTE * 2;
   maxPlayers = 10;
   minPlayers = 2;
   maxMonsters = 5;
-  description?: string | undefined = "start an event";
+  description = "fight in the dungeon";
 
   async exec(msg: Message) {
 
