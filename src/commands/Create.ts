@@ -7,7 +7,7 @@ import { bold } from "@jiman24/discordjs-utils";
 
 export default class extends Command {
   name = "create";
-  description = "creates your character";
+  description = "create your character";
 
   async exec(msg: Message) {
 
