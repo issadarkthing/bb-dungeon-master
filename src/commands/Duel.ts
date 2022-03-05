@@ -1,6 +1,7 @@
 import { Command } from "@jiman24/commandment";
 import { random } from "@jiman24/discordjs-utils";
 import { Message } from "discord.js";
+import { Duel } from "../structure/Battle";
 import { Player } from "../structure/Player";
 
 
@@ -18,6 +19,10 @@ export default class extends Command {
    
     const player = Player.fromUser(msg.author);
     const opponent = Player.fromUser(mentionedMember.user);
+
+    const battle = new Duel(msg, player, opponent);
+
+    await battle.run();
 
     const [winner, loser] = random.shuffle([player, opponent]);
 
