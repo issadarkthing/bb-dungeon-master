@@ -32,23 +32,20 @@ function replaceText(text: string, playerName: string, opponentName: string) {
     .replace("%player", playerName);
 }
 
-abstract class Battle {
+export class Battle {
   textSet = random.pick(texts);
   interval = 2000;
 
-  constructor(protected msg: Message) {}
+  constructor(
+    private msg: Message, 
+    private entities1: Entity[], 
+    private entities2: Entity[],
+  ) {}
 
-  protected send(options: string | MessagePayload | MessageOptions) {
+  private send(options: string | MessagePayload | MessageOptions) {
     return this.msg.channel.send(options);
   }
 
-  abstract run(): Promise<void>;
-}
-
-export class Duel extends Battle {
-  constructor(msg: Message, public entity1: Entity, public entity2: Entity) {
-    super(msg);
-  }
 
   async run() {
 
@@ -56,11 +53,14 @@ export class Duel extends Battle {
 
     for (const text of this.textSet) {
 
-      const attacker = text.includes("🔺") ? this.entity1 : this.entity2;
+      const player = random.pick(this.entities1);
+      const opponent = random.pick(this.entities2);
+
       const color = text.includes("🔺") ? "GREEN" : "RED";
-      const battleText = replaceText(text, this.entity1.name, this.entity2.name);
+      const battleText = replaceText(text, player.name, opponent.name);
+      const image = text.includes("🔺") ? player.imageUrl : opponent.imageUrl;
       const embed = new MessageEmbed()
-        .setThumbnail(attacker.imageUrl)
+        .setThumbnail(image)
         .setColor(color)
         .setDescription(battleText);
 
@@ -72,7 +72,6 @@ export class Duel extends Battle {
         await battleMsg.delete().catch(() => {});
       }
     }
-
   }
 }
 
