@@ -1,9 +1,10 @@
 import { Command } from "@jiman24/commandment";
 import { ButtonHandler } from "@jiman24/discordjs-button";
-import { random, sleep } from "@jiman24/discordjs-utils";
+import { random } from "@jiman24/discordjs-utils";
 import { Message } from "discord.js";
 import { Monster } from "../structure/Monster";
 import { Player } from "../structure/Player";
+import { Battle } from "../structure/Battle";
 
 export default class extends Command {
   name = "boss";
@@ -36,9 +37,9 @@ export default class extends Command {
 
     await menu.run();
    
-    msg.channel.send("Starting battle");
+    const battle = new Battle(msg, players, [monster]);
 
-    await sleep(2000);
+    await battle.run();
 
     const isWin = random.bool();
 
