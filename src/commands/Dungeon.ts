@@ -4,6 +4,7 @@ import { ButtonHandler } from "@jiman24/discordjs-button";
 import { random, time } from "@jiman24/discordjs-utils";
 import { Player } from "../structure/Player";
 import { Monster } from "../structure/Monster";
+import { Battle } from "../structure/Battle";
 
 export default class extends Command {
   name = "dungeon";
@@ -17,14 +18,24 @@ export default class extends Command {
 
     const menu = new ButtonHandler(
       msg, 
-      `Waiting for players to join the event`
+      `Waiting for ${this.minPlayers}-${this.maxPlayers} players to join the event`
     );
+
+    menu.setMultiUser(this.maxPlayers);
 
     const players: Player[] = [];
 
     menu.addButton("join", user => {
-      const player = Player.fromUser(user);
-      players.push(player);
+
+      try {
+        const player = Player.fromUser(user);
+        players.push(player);
+        msg.channel.send(`${player.name} joined the battle`);
+
+      } catch (err) {
+        msg.channel.send((err as Error).message);
+      }
+
     });
 
     await menu.run();
@@ -39,6 +50,10 @@ export default class extends Command {
       const monster = monsters[0];
       const player = random.pick(players);
       const isWin = random.bool();
+
+      const battle = new Battle(msg, players, [monster]);
+
+      await battle.run();
 
       if (isWin) {
 
