@@ -1,8 +1,9 @@
 import { Command } from "@jiman24/commandment";
-import { bold, random, sleep } from "@jiman24/discordjs-utils";
+import { bold, random } from "@jiman24/discordjs-utils";
 import { Message } from "discord.js";
 import { Monster } from "../structure/Monster";
 import { Player } from "../structure/Player";
+import { Duel } from "../structure/Battle";
 
 export default class extends Command {
   name = "battle";
@@ -15,7 +16,9 @@ export default class extends Command {
 
     msg.channel.send(`${bold(player.name)} vs ${bold(monster.name)}`);
 
-    await sleep(2000);
+    const battle = new Duel(msg, player, monster);
+
+    await battle.run();
 
     const isWin = random.bool();
 

@@ -1,15 +1,12 @@
 import { random } from "@jiman24/discordjs-utils";
 import { MessageEmbed } from "discord.js";
+import { Entity } from "./Entity";
 
-export class Monster {
-  constructor(
-    public name: string, 
-    public imageUrl: string,
-  ) {}
+export class Monster extends Entity {
 
   static random() {
     const name = random.pick(names);
-    return new Monster(name.name, name.url);
+    return new Monster(name.name, name.name, name.url);
   }
 
   show() {
