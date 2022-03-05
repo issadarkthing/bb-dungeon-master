@@ -9,6 +9,7 @@ import { Battle } from "../structure/Battle";
 export default class extends Command {
   name = "boss";
   description = "fight boss with your members";
+  minPlayers = 2;
   maxPlayers = 10;
 
   async exec(msg: Message) {
@@ -16,7 +17,7 @@ export default class extends Command {
     const monster = Monster.random();
     const monsterInfo = monster.show();
 
-    monsterInfo.setDescription(`Waiting for ${this.maxPlayers} players to join`);
+    monsterInfo.setDescription(`Waiting for ${this.minPlayers}-${this.maxPlayers} players to join`);
 
     const menu = new ButtonHandler(msg, monsterInfo)
       .setMultiUser(this.maxPlayers);
@@ -28,6 +29,7 @@ export default class extends Command {
       try { 
         const player = Player.fromUser(user); 
         players.push(player);
+        msg.channel.send(`${player.name} has joined the battle`);
 
       } catch (err) {
         msg.channel.send((err as Error).message);
