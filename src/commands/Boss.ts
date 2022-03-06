@@ -5,6 +5,7 @@ import { Message } from "discord.js";
 import { Monster } from "../structure/Monster";
 import { Player } from "../structure/Player";
 import { Battle } from "../structure/Battle";
+import { client } from "..";
 
 export default class extends Command {
   name = "boss";
@@ -13,6 +14,14 @@ export default class extends Command {
   maxPlayers = 10;
 
   async exec(msg: Message) {
+
+    const member = msg.member!;
+    const validRoles = client.settings.ensure("role-events", []) as string[];
+
+    // if player does not have any of these roles
+    if (!member.roles.cache.some(x => validRoles.includes(x.id))) {
+      throw new Error("missing role to initiate event");
+    }
 
     const monster = Monster.random();
     const monsterInfo = monster.show();

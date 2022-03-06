@@ -15,7 +15,7 @@ export default class extends Command {
       throw new Error("you need to mention at least 1 role");
     }
 
-    client.settings.set("role-events", roles);
+    client.settings.set("role-events", roles.map(x => x.id));
 
     msg.channel.send(`Successfully set roles`);
 

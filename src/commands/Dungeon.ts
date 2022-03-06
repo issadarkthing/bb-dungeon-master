@@ -5,6 +5,7 @@ import { random, time } from "@jiman24/discordjs-utils";
 import { Player } from "../structure/Player";
 import { Monster } from "../structure/Monster";
 import { Battle } from "../structure/Battle";
+import { client } from "..";
 
 export default class extends Command {
   name = "dungeon";
@@ -15,6 +16,14 @@ export default class extends Command {
   description = "fight in the dungeon";
 
   async exec(msg: Message) {
+
+    const member = msg.member!;
+    const validRoles = client.settings.ensure("role-events", []) as string[];
+
+    // if player does not have any of these roles
+    if (!member.roles.cache.some(x => validRoles.includes(x.id))) {
+      throw new Error("missing role to initiate event");
+    }
 
     const menu = new ButtonHandler(
       msg, 
